@@ -24,7 +24,6 @@ def autenticar_usuario(nombre_usuario, contraseña):
     print("Nombre de usuario o contraseña incorrectos.")
     return False
 
-# Director (Cliente)
 class Cliente:
     def elegir_masa(self, builder):
         print("Tipos de masa disponibles:")
@@ -47,14 +46,17 @@ class Cliente:
         tipo_elegido = input("Su elección: ").capitalize()
 
         if tipo_elegido in tipos_masa:
-            # Aquí se implementaría la lógica para elegir la masa
-            # Utiliza builder.construir_masa_tipo_elegido() o algo similar
-            pass
+            if tipo_elegido == "Delgada":
+                builder.construir_masa_delgada()
+            # Resto de lógica para construir el tipo de masa
+            # builder.construir_masa_tipo_elegido() u otro similar
+            masa = builder.obtener_masa()  # Obtener la masa construida
+            masa.tipo = tipo_elegido  # Asignar el tipo de masa elegida
+            return masa  # Devolver la masa creada y asignada con el tipo
+
         else:
             print("Tipo de masa no disponible")
             return None
-
-        return builder.obtener_masa()
 
 if __name__ == "__main__":
     builder = MasaPizzaBuilder()
@@ -73,5 +75,5 @@ if __name__ == "__main__":
             # Guardar los detalles del pedido en un archivo CSV (pizzas.csv)
             with open('storage/pizzas.csv', 'a', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow([nombre_usuario, f"Elegido: Masa {masa_elegida.tipo}"])
+                writer.writerow([nombre_usuario, f"Elegida masa: {masa_elegida.tipo}"])
                 print("Detalles del pedido guardados en pizzas.csv")
