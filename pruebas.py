@@ -3,6 +3,7 @@ from Builders.masa_builder import MasaPizzaBuilder
 from Builders.salsa_builder import SalsaPizzaBuilder
 from Builders.ingredientes_builder import IngredientesPizzaBuilder
 from Builders.maridajes_builder import BebidaPizzaBuilder
+
 # Función para registrar un nuevo usuario
 def registrar_nuevo_usuario():
     nombre_usuario = input("Introduce tu nombre de usuario: ")
@@ -119,45 +120,50 @@ class Cliente:
             if respuesta != 'sí' and respuesta != 'si':
                 break
         return builder.obtener_ingredientes()
-    
-    def elegir_bebida(self, builder):
-        print("Tipos de bebidas disponibles:")
-        tipos_bebida = [
-            "Vino Blanco",
+
+
+    def elegir_maridaje(self, builder):
+        print("Maridajes disponibles:")
+        tipos_maridaje = [
             "Vino Tinto",
+            "Vino Blanco",
             "Vino Rosado",
             "Cerveza",
             "Coctel"
         ]
 
-        print("Elija el tipo de bebida escribiendo su nombre:")
-        for tipo in tipos_bebida:
+        print("Elija el tipo de maridaje escribiendo su nombre:")
+        for tipo in tipos_maridaje:
             print(f"- {tipo}")
 
         tipo_elegido = input("Su elección: ").capitalize()
 
-        if tipo_elegido == "Vino Blanco":
-            builder.construir_vino_blanco()
-        elif tipo_elegido == "Vino Tinto":
-            builder.construir_vino_tinto()
-        elif tipo_elegido == "Vino Rosado":
-            builder.construir_vino_rosado()
-        elif tipo_elegido == "Cerveza":
-            builder.construir_cerveza()
-        elif tipo_elegido == "Coctel":
-            builder.construir_coctel()
+        if tipo_elegido in tipos_maridaje:
+            if tipo_elegido == "Vino Tinto":
+                builder.construir_vino_tinto()
+            elif tipo_elegido == "Vino Blanco":
+                builder.construir_vino_blanco()
+            elif tipo_elegido == "Vino Rosado":
+                builder.construir_vino_rosado()
+            elif tipo_elegido == "Cerveza":
+                builder.construir_cerveza()
+            elif tipo_elegido == "Coctel":
+                builder.construir_coctel()
+            else:
+                print("Tipo de maridaje no válido")
+                return None
+
+            return builder.obtene_bebida()
+
         else:
-            print("Tipo de bebida no válido")
-
-        return builder.obtener_bebida()
-
+            print("Tipo de maridaje no disponible")
+            return None
     
-
 if __name__ == "__main__":
     masa_builder = MasaPizzaBuilder()
     salsa_builder = SalsaPizzaBuilder()
     ingredientes_builder = IngredientesPizzaBuilder()
-    bebida_builder = BebidaPizzaBuilder()
+    maridaje_builder = BebidaPizzaBuilder()
     cliente = Cliente()
 
     registrar_nuevo_usuario()  # Registra un nuevo usuario
@@ -178,21 +184,19 @@ if __name__ == "__main__":
                 if ingredientes_elegidos:
                     print(f"El usuario {nombre_usuario} ha elegido los siguientes ingredientes:")
                     print(ingredientes_elegidos)
-                    
-                    bebida_elegida = cliente.elegir_bebida(bebida_builder)
-                    if bebida_elegida:
-                      print(f"El usuario {nombre_usuario} ha elegido la bebida {bebida_elegida.tipo}")
 
-                    # Guardar los detalles del pedido en un archivo CSV (pizzas.csv)
-                    with open('storage/pizzas.csv', 'a', newline='') as file:
-                        writer = csv.writer(file)
-                        writer.writerow([
-                            nombre_usuario,
-                            f"Elegida masa: {masa_elegida.tipo}",
-                            f"Elegida salsa: {salsa_elegida.tipo}",
-                            f"Elegidos ingredientes: {ingredientes_elegidos}",
-                            f"Elegida bebida: {bebida_elegida.tipo}"
-                            
-                            
-                        ])
-                    print("Detalles del pedido guardados en pizzas.csv")
+                    maridaje_elegido = cliente.elegir_maridaje(maridaje_builder)
+                    if maridaje_elegido:
+                        print(f"El usuario {nombre_usuario} ha elegido el maridaje {maridaje_elegido.tipo}")
+
+                        # Guardar los detalles del pedido en un archivo CSV (pizzas.csv)
+                        with open('storage/pizzas.csv', 'a', newline='') as file:
+                            writer = csv.writer(file)
+                            writer.writerow([
+                                nombre_usuario,
+                                f"Elegida masa: {masa_elegida.tipo}",
+                                f"Elegida salsa: {salsa_elegida.tipo}",
+                                f"Elegidos ingredientes: {ingredientes_elegidos}",
+                                f"Elegido maridaje: {maridaje_elegido.tipo}"
+                            ])
+                        print("Detalles del pedido guardados en pizzas.csv")
