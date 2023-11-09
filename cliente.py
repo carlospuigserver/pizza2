@@ -3,6 +3,8 @@ from Builders.masa_builder import MasaPizzaBuilder
 from Builders.salsa_builder import SalsaPizzaBuilder
 from Builders.ingredientes_builder import IngredientesPizzaBuilder
 from Builders.maridajes_builder import BebidaPizzaBuilder
+from Builders.coccion_builder import CoccionPizzaBuilder
+
 # Función para registrar un nuevo usuario
 def registrar_nuevo_usuario():
     nombre_usuario = input("Introduce tu nombre de usuario: ")
@@ -150,6 +152,34 @@ class Cliente:
             print("Tipo de bebida no válido")
 
         return builder.obtener_bebida()
+    
+    def elegir_coccion(self, builder):
+        print("Métodos de cocción disponibles:")
+        metodos_coccion = [
+            "Horno de leña",
+            "Horno eléctrico",
+            "Piedra para pizzas",
+            "Parrilla para pizzas"
+        ]
+
+        print("Elija el método de cocción escribiendo su nombre:")
+        for metodo in metodos_coccion:
+            print(f"- {metodo}")
+
+        metodo_elegido = input("Su elección: ").capitalize()
+
+        if metodo_elegido == "Horno de lena":
+            builder.construir_horno_lena()
+        elif metodo_elegido == "Horno electrico":
+            builder.construir_horno_electrico()
+        elif metodo_elegido == "Piedra para pizzas":
+            builder.construir_piedra_pizzas()
+        elif metodo_elegido == "Parrilla para pizzas":
+            builder.construir_parrilla_pizzas()
+        else:
+            print("Método de cocción no válido")
+
+        return builder.obtener_coccion()
 
     
 
@@ -158,6 +188,7 @@ if __name__ == "__main__":
     salsa_builder = SalsaPizzaBuilder()
     ingredientes_builder = IngredientesPizzaBuilder()
     bebida_builder = BebidaPizzaBuilder()
+    coccion_builder = CoccionPizzaBuilder()
     cliente = Cliente()
 
     registrar_nuevo_usuario()  # Registra un nuevo usuario
@@ -183,6 +214,10 @@ if __name__ == "__main__":
                     if bebida_elegida:
                       print(f"El usuario {nombre_usuario} ha elegido la bebida {bebida_elegida.tipo}")
 
+                      coccion_elegida = cliente.elegir_coccion(coccion_builder)
+                      if coccion_elegida:
+                        print(f"El usuario {nombre_usuario} ha elegido la técnica de cocción {coccion_elegida.metodo}")
+
                     # Guardar los detalles del pedido en un archivo CSV (pizzas.csv)
                     with open('storage/pizzas.csv', 'a', newline='') as file:
                         writer = csv.writer(file)
@@ -191,7 +226,8 @@ if __name__ == "__main__":
                             f"Elegida masa: {masa_elegida.tipo}",
                             f"Elegida salsa: {salsa_elegida.tipo}",
                             f"Elegidos ingredientes: {ingredientes_elegidos}",
-                            f"Elegida bebida: {bebida_elegida.tipo}"
+                            f"Elegida bebida: {bebida_elegida.tipo}",
+                            f"Elegida tecnica de cocción: {coccion_elegida.metodo}"
                             
                             
                         ])
