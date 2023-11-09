@@ -61,18 +61,38 @@ if __name__ == "__main__":
     extras = cliente.elegir_extras(extras_builder)
     maridaje = cliente.elegir_maridaje(maridaje_builder)
 
-    # Guardar los detalles de la pizza en un archivo CSV
-    pizza_details = {
-        'Masa': masa.tipo,
-        'Salsa': salsa.tipo,
-        'Cocción': coccion.tipo,
-        'Presentación': presentacion.tipo,
-        'Ingredientes': ingredientes,
-        'Extras': extras,
-        'Maridaje': maridaje
-        # Otros detalles de la pizza
-    }
+    from usuario import registrar_usuario, autenticar_usuario
 
-    # Agregar la pizza al archivo CSV
-    csv_handler_pizzas = CSVHandler('pizzas.csv')
-    csv_handler_pizzas.guardar_pizza(pizza_details)
+# Función para realizar un pedido
+def hacer_pedido(nombre_usuario):
+    # Aquí realizarías el pedido
+    pedido = {
+        'usuario': nombre_usuario,
+        'detalles': '...detalles del pedido...',
+        # Otros detalles del pedido
+    }
+    return pedido
+
+if __name__ == "__main__":
+    # Pedir al usuario que se registre o inicie sesión
+    nombre_usuario = input("Introduce tu nombre de usuario: ")
+    contraseña = input("Introduce tu contraseña: ")
+
+    if not autenticar_usuario(nombre_usuario, contraseña):
+        registrar_usuario(nombre_usuario, contraseña)
+        print("Te has registrado con éxito. Ahora puedes realizar tu pedido.")
+    else:
+        print("¡Bienvenido de nuevo!")
+
+    # Realizar el pedido
+    pedido_actual = hacer_pedido(nombre_usuario)
+
+    # Guardar los detalles del pedido en un archivo CSV
+    with open('pizzas.csv', 'a') as file:
+        # Escribir los detalles del pedido en el archivo CSV
+        # Ejemplo:
+        file.write(f"{pedido_actual['usuario']}, {pedido_actual['detalles']}\n")
+        # Otros detalles del pedido
+
+    print("Pedido realizado y guardado con éxito.")
+

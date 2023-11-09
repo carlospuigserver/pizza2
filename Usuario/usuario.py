@@ -22,10 +22,3 @@ def autenticar_usuario(nombre_usuario, contraseña):
     print("Nombre de usuario o contraseña incorrectos.")
     return False
 
-# Registrar un nuevo usuario
-registrar_nuevo_usuario()
-
-# Autenticar al usuario con sus credenciales
-nombre = input("Nombre de usuario: ")
-contraseña = input("Contraseña: ")
-autenticar_usuario(nombre, contraseña)
