@@ -4,6 +4,7 @@ from Builders.salsa_builder import SalsaPizzaBuilder
 from Builders.ingredientes_builder import IngredientesPizzaBuilder
 from Builders.maridajes_builder import BebidaPizzaBuilder
 from Builders.coccion_builder import CoccionPizzaBuilder
+from Builders.presentacion_builder import PresentacionPizzaBuilder
 
 # Función para registrar un nuevo usuario
 def registrar_nuevo_usuario():
@@ -52,15 +53,32 @@ class Cliente:
         if tipo_elegido in tipos_masa:
             if tipo_elegido == "Delgada":
                 builder.construir_masa_delgada()
-            # Resto de lógica para construir el tipo de masa
-            # builder.construir_masa_tipo_elegido() u otro similar
-            masa = builder.obtener_masa()  # Obtener la masa construida
-            masa.tipo = tipo_elegido  # Asignar el tipo de masa elegida
-            return masa  # Devolver la masa creada y asignada con el tipo
+            elif tipo_elegido == "48 Horas":
+                builder.construir_masa_48_horas()
+            elif tipo_elegido == "Madre":
+                builder.construir_masa_madre()
+            elif tipo_elegido == "Poolish":
+                builder.construir_masa_poolish()
+            elif tipo_elegido == "Napolitana":
+                builder.construir_masa_napolitana()
+            elif tipo_elegido == "New York Style":
+                builder.construir_masa_new_york_style()
+            elif tipo_elegido == "Chicago Style":
+                builder.construir_masa_chicago_style()
+            elif tipo_elegido == "Siciliana":
+                builder.construir_masa_siciliana()
+            elif tipo_elegido == "Cracker":
+                builder.construir_masa_cracker()
+            else:
+                print("Tipo de salsa no válido")
+                return None
+
+            return builder.obtener_masa()
 
         else:
             print("Tipo de masa no disponible")
             return None
+        
 
     def elegir_salsa(self, builder):
         print("Tipos de salsa disponibles:")
@@ -72,8 +90,8 @@ class Cliente:
             "BBQ",
             "Champiñones",
             "Tomate sin gluten",
-            "Autor",
-            "Edición Limitada"
+            "Autor"
+            
         ]
 
         print("Elija el tipo de salsa escribiendo su nombre:")
@@ -152,11 +170,12 @@ class Cliente:
             print("Tipo de bebida no válido")
 
         return builder.obtener_bebida()
+
     
     def elegir_coccion(self, builder):
         print("Métodos de cocción disponibles:")
         metodos_coccion = [
-            "Horno de leña",
+            "Horno de lena",
             "Horno eléctrico",
             "Piedra para pizzas",
             "Parrilla para pizzas"
@@ -180,6 +199,46 @@ class Cliente:
             print("Método de cocción no válido")
 
         return builder.obtener_coccion()
+    
+    def elegir_presentacion(self, builder):
+        print("Opciones de presentación disponibles:")
+        opciones_presentacion = [
+            "Tabla de madera",
+            "Plato de cerámica clasica",
+            "Sobre plataforma de plata",
+            "Sobre plataforma de oro",
+            "Plato de cristal",
+            "Sobre piedra",
+            "Plato de terracota",
+            "Plato de porcelana"
+        ]
+
+        print("Elija el tipo de presentación escribiendo su nombre :")
+        for idx, opcion in enumerate(opciones_presentacion, start=1):
+            print(f"{idx}. {opcion}")
+
+        opcion_elegida = input("Su elección: ").capitalize()
+
+        if opcion_elegida == "Tabla de madera" :
+            builder.construir_tabla_madera()
+        elif opcion_elegida == "Plato de cerámica clásica" :
+            builder.construir_plato_ceramica_clasica()
+        elif opcion_elegida == "Sobre plataforma de plata" :
+            builder.construir_plataforma_plata()
+        elif opcion_elegida == "Sobre plataforma de oro":
+            builder.construir_plataforma_oro()
+        elif opcion_elegida == "Plato de cristal" :
+            builder.construir_plato_cristal()
+        elif opcion_elegida == "Sobre piedra" :
+            builder.construir_sobre_piedra()
+        elif opcion_elegida == "Plato de terracota" :
+            builder.construir_plato_terracota()
+        elif opcion_elegida == "Plato de porcelana"  :
+            builder.construir_plato_porcelana()
+        else:
+            print("Opción de presentación no válida")
+
+        return builder.obtener_presentacion()
 
     
 
@@ -189,6 +248,7 @@ if __name__ == "__main__":
     ingredientes_builder = IngredientesPizzaBuilder()
     bebida_builder = BebidaPizzaBuilder()
     coccion_builder = CoccionPizzaBuilder()
+    builder = PresentacionPizzaBuilder()
     cliente = Cliente()
 
     registrar_nuevo_usuario()  # Registra un nuevo usuario
@@ -218,6 +278,10 @@ if __name__ == "__main__":
                       if coccion_elegida:
                         print(f"El usuario {nombre_usuario} ha elegido la técnica de cocción {coccion_elegida.metodo}")
 
+                        presentacion_elegida = cliente.elegir_presentacion(builder)
+                        if presentacion_elegida:
+                         print(f"El usuario {nombre_usuario} ha elegido la presentación {presentacion_elegida.tipo}")
+
                     # Guardar los detalles del pedido en un archivo CSV (pizzas.csv)
                     with open('storage/pizzas.csv', 'a', newline='') as file:
                         writer = csv.writer(file)
@@ -227,7 +291,8 @@ if __name__ == "__main__":
                             f"Elegida salsa: {salsa_elegida.tipo}",
                             f"Elegidos ingredientes: {ingredientes_elegidos}",
                             f"Elegida bebida: {bebida_elegida.tipo}",
-                            f"Elegida tecnica de cocción: {coccion_elegida.metodo}"
+                            f"Elegida tecnica de coccion: {coccion_elegida.metodo}",
+                            f"Elegida presentación: {presentacion_elegida.tipo}"
                             
                             
                         ])
