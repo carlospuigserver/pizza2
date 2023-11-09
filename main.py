@@ -1,6 +1,10 @@
-# main.py
 from Builders.masa_builder import MasaPizzaBuilder
 from Builders.salsa_builder import SalsaPizzaBuilder
+from Builders.coccion_builder import CoccionPizzaBuilder
+from Builders.presentacion_builder import PresentacionPizzaBuilder
+from Builders.ingredientes_builder import IngredientesPizzaBuilder
+from Builders.extras_builder import ExtrasPizzaBuilder
+from Builders.maridajes_builder import BebidaPizza
 from storage.csv_handler import CSVHandler
 from cliente import Cliente
 
@@ -21,7 +25,11 @@ if __name__ == "__main__":
     # Instancia de builders para construir la pizza
     masa_builder = MasaPizzaBuilder()
     salsa_builder = SalsaPizzaBuilder()
-    # Otros builders para ingredientes, cocción, presentación, maridaje, extras...
+    coccion_builder = CoccionPizzaBuilder()
+    presentacion_builder = PresentacionPizzaBuilder()
+    ingredientes_builder = IngredientesPizzaBuilder()
+    extras_builder = ExtrasPizzaBuilder()
+    maridaje_builder = BebidaPizza()
 
     # Manejador CSV para usuarios
     csv_handler_usuarios = CSVHandler('usuarios.csv')
@@ -47,12 +55,21 @@ if __name__ == "__main__":
     # Interacción para construir la pizza
     masa = cliente.elegir_masa(masa_builder)
     salsa = cliente.elegir_salsa(salsa_builder)
-    # Otras elecciones y construcción de la pizza...
+    coccion = cliente.elegir_coccion(coccion_builder)
+    presentacion = cliente.elegir_presentacion(presentacion_builder)
+    ingredientes = cliente.elegir_ingredientes(ingredientes_builder)
+    extras = cliente.elegir_extras(extras_builder)
+    maridaje = cliente.elegir_maridaje(maridaje_builder)
 
     # Guardar los detalles de la pizza en un archivo CSV
     pizza_details = {
         'Masa': masa.tipo,
         'Salsa': salsa.tipo,
+        'Cocción': coccion.tipo,
+        'Presentación': presentacion.tipo,
+        'Ingredientes': ingredientes,
+        'Extras': extras,
+        'Maridaje': maridaje
         # Otros detalles de la pizza
     }
 
