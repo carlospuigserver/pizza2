@@ -5,6 +5,7 @@ from Builders.ingredientes_builder import IngredientesPizzaBuilder
 from Builders.maridajes_builder import BebidaPizzaBuilder
 from Builders.coccion_builder import CoccionPizzaBuilder
 from Builders.presentacion_builder import PresentacionPizzaBuilder
+from Builders.extras_builder import ExtrasPizzaBuilder
 
 # Función para registrar un nuevo usuario
 def registrar_nuevo_usuario():
@@ -239,6 +240,54 @@ class Cliente:
             print("Opción de presentación no válida")
 
         return builder.obtener_presentacion()
+    
+    def elegir_extras(self, builder):
+        quiere_borde_relleno = input("¿Desea su borde relleno? (Sí/No): ")
+        if quiere_borde_relleno.lower() == "sí":
+            print("¿Qué borde relleno desea?")
+            print("1. Relleno de queso")
+            print("2. Ajo y queso parmesano")
+            print("3. Crust de queso")
+            print("4. Relleno de pepperoni o jamón")
+            print("5. Relleno de verduras")
+
+            borde = input("Su elección (borde relleno): ")
+            opciones_borde = {
+                "1": "Relleno de queso",
+                "2": "Ajo y queso parmesano",
+                "3": "Crust de queso",
+                "4": "Relleno de pepperoni o jamón",
+                "5": "Relleno de verduras"
+            }
+            builder.anadir_borde_relleno(opciones_borde.get(borde, ""))
+
+        quiere_ingredientes_gourmet = input("¿Desea algún ingrediente gourmet? (Sí/No): ")
+        if quiere_ingredientes_gourmet.lower() == "sí":
+            print("¿Qué ingrediente gourmet desea?")
+            print("1. Trufas")
+            print("2. Caviar")
+            print("3. Foie Gras")
+            print("4. Jamón Ibérico")
+            print("5. Quesos exclusivos")
+            print("6. Setas silvestres")
+            print("7. Mariscos de alta calidad")
+            print("8. Verduras orgánicas y raras")
+
+            ingrediente = input("Su elección (ingrediente gourmet): ")
+            opciones_ingredientes = {
+                "1": "Trufas",
+                "2": "Caviar",
+                "3": "Foie Gras",
+                "4": "Jamón Ibérico",
+                "5": "Quesos exclusivos",
+                "6": "Setas silvestres",
+                "7": "Mariscos de alta calidad",
+                "8": "Verduras orgánicas y raras"
+            }
+            builder.anadir_ingredientes_gourmet(opciones_ingredientes.get(ingrediente, ""))
+
+        # Se retorna el objeto con los extras seleccionados
+        return builder.obtener_extras()
 
     
 
@@ -249,6 +298,7 @@ if __name__ == "__main__":
     bebida_builder = BebidaPizzaBuilder()
     coccion_builder = CoccionPizzaBuilder()
     builder = PresentacionPizzaBuilder()
+    extras_builder = ExtrasPizzaBuilder()
     cliente = Cliente()
 
     registrar_nuevo_usuario()  # Registra un nuevo usuario
@@ -281,7 +331,12 @@ if __name__ == "__main__":
                         presentacion_elegida = cliente.elegir_presentacion(builder)
                         if presentacion_elegida:
                          print(f"El usuario {nombre_usuario} ha elegido la presentación {presentacion_elegida.tipo}")
-
+                        
+                        extras_elegidos = cliente.elegir_extras(extras_builder)
+                        if extras_elegidos:
+                         print(f"El usuario {nombre_usuario} ha elegido los siguientes extras:{extras_elegidos}")
+                         
+                            
                     # Guardar los detalles del pedido en un archivo CSV (pizzas.csv)
                     with open('storage/pizzas.csv', 'a', newline='') as file:
                         writer = csv.writer(file)
@@ -292,7 +347,8 @@ if __name__ == "__main__":
                             f"Elegidos ingredientes: {ingredientes_elegidos}",
                             f"Elegida bebida: {bebida_elegida.tipo}",
                             f"Elegida tecnica de coccion: {coccion_elegida.metodo}",
-                            f"Elegida presentación: {presentacion_elegida.tipo}"
+                            f"Elegida presentación: {presentacion_elegida.tipo}",
+                            f"Elegidos extras: {extras_elegidos}"
                             
                             
                         ])
